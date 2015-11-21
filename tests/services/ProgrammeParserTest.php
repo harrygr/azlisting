@@ -23,11 +23,9 @@ class ProgrammeParserTest extends TestCase
 
         $programmes = $parser->parse($json);
 
+        // our dummy json contained 3 programmes
         $this->assertCount(3, $programmes);
         $this->assertInstanceOf(Collection::class, $programmes);
         $this->assertInstanceOf(Programme::class, $programmes->first());
-
-        // our dummy json contained 3 programmes
-        var_dump($programmes->first()->episodes->first()->release_date);
     }
 }

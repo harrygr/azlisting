@@ -31,7 +31,7 @@ class ProgrammeParser implements ProgrammeParserInterface {
         return $episodes->map(function($episode) {
             return new Episode([
                 'title'         => $episode['title'],
-                'subtitle'      => $episode['subtitle'],
+                'subtitle'      => isset($episode['subtitle']) ? $episode['subtitle'] : null,
                 'synopsis'      => $episode['synopses']['medium'],
                 'release_date'  => $episode['release_date_time'],
                 ]);
