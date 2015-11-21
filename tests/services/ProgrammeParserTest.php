@@ -21,7 +21,7 @@ class ProgrammeParserTest extends TestCase
         // Get a dummy json response
         $json = file_get_contents(base_path('tests/resources/programmes.json'));
 
-        $programmes = $parser->parse($json);
+        $programmes = $parser->parse(json_decode($json, true));
 
         // our dummy json contained 3 programmes
         $this->assertCount(3, $programmes);

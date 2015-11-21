@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Contracts\Cache\Repository as Cache;
+use Illuminate\Support\Facades\Request;
 
 class CacheBbcApiClient implements BbcApiClientContract {
 
@@ -17,8 +18,8 @@ class CacheBbcApiClient implements BbcApiClientContract {
 
     public function getProgrammes($letter)
     {
-        
-        return $this->cache->remember("bbc.programmes.$letter", 10, function() use ($letter) {
+        $page = Request::get('page', 1);
+        return $this->cache->remember("bbc.programmes.$letter.page.$page", 10, function() use ($letter) {
             return $this->bbc_api_client->getProgrammes($letter);
         });
 

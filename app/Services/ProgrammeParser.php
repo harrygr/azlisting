@@ -10,9 +10,8 @@ class ProgrammeParser implements ProgrammeParserInterface {
 
     private $image_recipe = '406x228';
 
-    public function parse($json)
+    public function parse($content)
     {
-        $content = json_decode($json, true);
         $programmes = collect($content['atoz_programmes']['elements']);
 
         return $programmes->map(function($programme) {
