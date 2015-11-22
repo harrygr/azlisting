@@ -46,7 +46,7 @@ class ProgrammeParser implements ProgrammeParserInterface {
                 'title'         => $episode['title'],
                 'subtitle'      => isset($episode['subtitle']) ? $episode['subtitle'] : null,
                 'synopsis'      => $episode['synopses']['medium'],
-                'release_date'  => $episode['release_date_time'],
+                'release_date'  => isset($episode['release_date_time']) ? $episode['release_date_time'] : null,
                 ]);
         });
     }
