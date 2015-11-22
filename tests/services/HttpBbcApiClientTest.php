@@ -22,7 +22,7 @@ class HttpBbcApiClientTest extends TestCase
         $json = file_get_contents(base_path('tests/resources/programmes.json'));
 
         // We need to mock the BBC Api so we'll ensure a sample snippet of json is returned from the mocked http client
-        $mocked_http_response = \Mockery::mock(['getBody' => $json]);
+        $mocked_http_response = \Mockery::mock(['getStatusCode' => 200, 'getBody' => $json]);
 
         $mocked_http_client = \Mockery::mock(ClientInterface::class);
         $mocked_http_client->shouldReceive('request')->andReturn($mocked_http_response);
@@ -37,5 +37,6 @@ class HttpBbcApiClientTest extends TestCase
         $programmes = $client->getProgrammes('A');
         $this->assertContains('foo', $programmes);
     }
+
 
 }

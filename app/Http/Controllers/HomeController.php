@@ -9,6 +9,10 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
+    /**
+     * Show the front page
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         return view('index');

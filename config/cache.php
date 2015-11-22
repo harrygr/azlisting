@@ -76,4 +76,6 @@ return [
 
     'prefix' => 'azlisting',
 
+    'remember_time' => env('CACHE_TIME', 10), // The default time to remember cache entries for
+
 ];
