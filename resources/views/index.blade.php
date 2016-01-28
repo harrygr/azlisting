@@ -12,6 +12,6 @@
         <az-programme-list></az-programme-list>
     </div>
 
-    <script src="/js/app.js"></script>
+    <script src="{{ url('') }}/js/app.js"></script>
 </body>
 </html>
