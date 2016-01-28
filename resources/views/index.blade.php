@@ -8,7 +8,7 @@
 <body>
     <div class="container" id="app">
         <h1>A-Z BBC Programmes</h1>
-
+        <p>Click a letter to see programmes</p>
         <az-programme-list></az-programme-list>
     </div>
 
