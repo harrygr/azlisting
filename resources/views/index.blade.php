@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="container" id="app">
-        <h1>A-Z Programmes</h1>
+        <h1>A-Z BBC Programmes</h1>
 
         <az-programme-list></az-programme-list>
     </div>
