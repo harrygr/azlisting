@@ -21,14 +21,14 @@ class ProgrammeParser implements ProgrammeParserInterface {
      */
     public function parse($content)
     {
-        $programmes = collect($content['atoz_programmes']['elements']);
+        $programmes = collect(array_get($content, 'atoz_programmes.elements'));
 
         return $programmes->map(function($programme) {
             return new Programme([
-                'title'     => $programme['title'],
-                'synopsis'  => $programme['synopses']['medium'],
-                'image'     => $this->getImageUrl($programme['images']['standard']),
-                'episodes'  => $this->parseEpisodes($programme['initial_children']),
+                'title'     => array_get($programme, 'title'),
+                'synopsis'  => array_get($programme, 'synopses.medium'),
+                'image'     => $this->getImageUrl(array_get($programme, 'images.standard')),
+                'episodes'  => $this->parseEpisodes(array_get($programme, 'initial_children')),
                 ]);
         });
     }
@@ -43,10 +43,10 @@ class ProgrammeParser implements ProgrammeParserInterface {
         $episodes = collect($episodes);
         return $episodes->map(function($episode) {
             return new Episode([
-                'title'         => $episode['title'],
-                'subtitle'      => isset($episode['subtitle']) ? $episode['subtitle'] : null,
-                'synopsis'      => $episode['synopses']['medium'],
-                'release_date'  => isset($episode['release_date_time']) ? $episode['release_date_time'] : null,
+                'title'         => array_get($episode, 'title'),
+                'subtitle'      => array_get($episode, 'subtitle'),
+                'synopsis'      => array_get($episode, 'synopses.medium'),
+                'release_date'  => array_get($episode, 'release_date_time'),
                 ]);
         });
     }
