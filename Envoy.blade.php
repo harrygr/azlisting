@@ -55,7 +55,7 @@ $release = 'release_' . date('Ymd_Hi_s');
     ln -nfs ../../storage storage;
     chgrp -h www-data storage;
 
-    sudo service php5-fpm reload;
+    sudo service php7.0-fpm reload;
 @endtask
 
 @task('link_env')
