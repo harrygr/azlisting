@@ -4,7 +4,7 @@
 $repo = 'https://github.com/harrygr/azlisting.git';
 $release_dir = '/var/www/releases';
 $app_dir = '/var/www/app';
-$release = 'release_' . date('YmdHis');
+$release = 'release_' . date('Ymd_Hi_s');
 @endsetup
 
 @macro('deploy', ['on' => 'web'])
@@ -54,6 +54,8 @@ $release = 'release_' . date('YmdHis');
     cd {{ $release_dir }}/{{ $release }};
     ln -nfs ../../storage storage;
     chgrp -h www-data storage;
+
+    sudo service php5-fpm reload;
 @endtask
 
 @task('link_env')
