@@ -2,8 +2,9 @@
 
 @setup
 $repo = 'https://github.com/harrygr/azlisting.git';
-$release_dir = '/var/www/releases';
-$app_dir = '/var/www/app';
+$site_dir = '/var/www';
+$release_dir = $site_dir.'/releases';
+$app_dir = $site_dir.'/app';
 $release = 'release_' . date('Ymd_Hi_s');
 @endsetup
 
@@ -12,7 +13,6 @@ $release = 'release_' . date('Ymd_Hi_s');
     run_composer
     update_permissions
     update_symlinks
-    link_env
 @endmacro
 
 @task('fetch_repo')
@@ -37,7 +37,7 @@ $release = 'release_' . date('Ymd_Hi_s');
 @task('update_symlinks')
     echo "updating symlinks";
 
-    {{-- handle project folder --}}
+    {{-- project folder --}}
     echo "- linking project folder";
     ln -nfs {{ $release_dir }}/{{ $release }} {{ $app_dir }};
     chgrp -h www-data {{ $app_dir }};
@@ -50,14 +50,16 @@ $release = 'release_' . date('Ymd_Hi_s');
 
     {{-- storage folder --}}
     echo "- linking storage folder";
+
+    {{-- Build up the storage folder if it doesn't exist --}}
+    [ -d {{ $site_dir }}/storage ] || { cp -a {{ $release_dir }}/{{ $release }}/storage {{ $site_dir }}/storage; chgrp -R www-data {{ $site_dir }}/storage; chmod -R ug+rwx {{ $site_dir }}/storage;}
+
+    {{-- Remove the release storage dir and symlink to the external one --}}
     rm -rf {{ $release_dir }}/{{ $release }}/storage;
     cd {{ $release_dir }}/{{ $release }};
     ln -nfs ../../storage storage;
-    chgrp -h www-data storage;
+    chgrp www-data storage;
 
+    {{-- Deploying user must have permission to restart php via sudo without password --}}
     sudo service php7.0-fpm reload;
-@endtask
-
-@task('link_env')
-    ln -nfs /var/www/.env {{ $release_dir }}/{{ $release }}/.env;
 @endtask

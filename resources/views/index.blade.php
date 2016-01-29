@@ -10,8 +10,10 @@
         <h1>A-Z BBC Programmes</h1>
         <p>Click a letter to see programmes</p>
         <az-programme-list></az-programme-list>
+    <footer>
+    <p class="text-muted">Copyright &copy; {{ date('Y') }} HarryGr</p>
+    </footer>
     </div>
-
     <script src="{{ url('') }}/js/app.js"></script>
 </body>
 </html>
