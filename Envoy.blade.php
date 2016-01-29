@@ -1,4 +1,4 @@
-@servers(['web' => 'aws-azlisting'])
+@servers(['web' => 'deployer@ec2-52-49-111-241.eu-west-1.compute.amazonaws.com'])
 
 @setup
 $repo = 'https://github.com/harrygr/azlisting.git';
@@ -19,7 +19,7 @@ $release = 'release_' . date('YmdHis');
     echo "fetching repo"
     [ -d {{ $release_dir }} ] || mkdir {{ $release_dir }};
     cd {{ $release_dir }};
-    git clone {{ $repo }} {{ $release }};
+    git clone -b master --depth=1 {{ $repo }} {{ $release }};
 @endtask
 
 @task('run_composer')
@@ -30,14 +30,30 @@ $release = 'release_' . date('YmdHis');
 @task('update_permissions')
     echo "setting permissions"
     cd {{ $release_dir }};
-    sudo chgrp -R www-data {{ $release }};
-    sudo chmod -R ug+rwx {{ $release }};
+    chgrp -R www-data {{ $release }};
+    chmod -R ug+rwx {{ $release }};
 @endtask
 
 @task('update_symlinks')
-    echo "updating symlinks"
+    echo "updating symlinks";
+
+    {{-- handle project folder --}}
+    echo "- linking project folder";
     ln -nfs {{ $release_dir }}/{{ $release }} {{ $app_dir }};
-    sudo chgrp -h www-data {{ $app_dir }};
+    chgrp -h www-data {{ $app_dir }};
+
+    {{-- environment file --}}
+    echo "- linking environment file";
+    cd {{ $release_dir }}/{{ $release }};
+    ln -nfs ../../.env .env;
+    chgrp -h www-data .env;
+
+    {{-- storage folder --}}
+    echo "- linking storage folder";
+    rm -rf {{ $release_dir }}/{{ $release }}/storage;
+    cd {{ $release_dir }}/{{ $release }};
+    ln -nfs ../../storage storage;
+    chgrp -h www-data storage;
 @endtask
 
 @task('link_env')
